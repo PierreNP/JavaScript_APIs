@@ -1,4 +1,6 @@
-const API_KEY = '37361375'
+const KEY = config.apikey
+
+console.log(KEY)
 const body = document.querySelector("body")
 const form = document.querySelector("form")
 const search = document.querySelector("#search")
@@ -20,13 +22,13 @@ form.addEventListener("submit", (e) => {
 
 async function getMovies(searchedFilmTitle) {
   resultsDisplay.innerHTML = ''
-  let response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedFilmTitle}`)
+  let response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${searchedFilmTitle}`)
   let myJson = await response.json()
   resultsPageCount = Math.ceil(myJson.totalResults / 10)
 
   for (let i = 1; i <= resultsPageCount; i++) {
 
-    response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedFilmTitle}&page=${i}&plot=full`)
+    response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${searchedFilmTitle}&page=${i}&plot=full`)
     myJson = await response.json()
     filmList = myJson.Search
 
@@ -34,7 +36,7 @@ async function getMovies(searchedFilmTitle) {
       resultsDisplay.innerHTML += `
       <div class="movie_box">
         <h1>${movie.Title} <span>(${movie.Year})</span></h1>
-        <img class="lzy_img" src="lazy_img.png" data-src=${movie.Poster !== "N/A" ? movie.Poster : "https://fixiedesign.com/images/stories/virtuemart/product/v%C3%A9lo-urbain-ps1-chrome.png"}>
+        <img class="lzy_img" src="lazy.png" data-src=${movie.Poster !== "N/A" ? movie.Poster : "https://fixiedesign.com/images/stories/virtuemart/product/v%C3%A9lo-urbain-ps1-chrome.png"}>
         <button data-movie = "${movie.imdbID}">Plus de détails</button>
       </div>
       <div class="hidden" id="details">detail : ${movie.imdbID}</div>
@@ -47,15 +49,15 @@ async function getMovies(searchedFilmTitle) {
             lazyImage.src = lazyImage.dataset.src
           }
         })
-      });
+      })
+
       const arr = document.querySelectorAll('img.lzy_img')
       arr.forEach((v) => {
-        imageObserver.observe(v);
+        imageObserver.observe(v)
       })
 
     })
   }
-
 
 
 }
@@ -69,9 +71,9 @@ resultsDisplay.addEventListener("click", (e) => {
 })
 
 async function getMovieDetails(id) {
-  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}&plot=full`)
+  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${id}&plot=full`)
   let myDetailedJson = await detailedResponse.json()
-  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b>${myDetailedJson.Plot}</p>`
+  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b><br>${myDetailedJson.Plot}</p>`
 }
 
 
@@ -92,4 +94,8 @@ body.addEventListener("click", (e) => {
     hidePopup()
 })
 
+body.addEventListener("keydown", (e) => {
+  if (e.key === "Escape")
+    hidePopup()
+})
 

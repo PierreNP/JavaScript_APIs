@@ -20,14 +20,12 @@ body {
   flex-direction: column;
   width: 80vw;
   min-height : 80vh;
-  /* border: 3px green solid; */
 }
 
 #results {
   display :grid;
   grid-template-columns: repeat(3,1fr);
   gap: 1rem;
-  /* border: 2px red solid; */
 }
 
 #details {
@@ -81,7 +79,6 @@ button {
   border-radius: 0.125rem;
 }
 
-
 input[type="submit"]:hover,
 button:hover {
   opacity: .8;
@@ -94,7 +91,6 @@ input[type="text"] {
   border:1px rgb(194, 194, 194) solid
 }
 
-
 .form-group {
   margin: 2rem 0;
 }
@@ -102,7 +98,6 @@ input[type="text"] {
 .hidden {
   display:none
 }
-
 
 .popup-container {
   background-color: rgba(0,0,0,0.6);
@@ -123,12 +118,18 @@ input[type="text"] {
   left: 50%;
   transform:translate(-50%,-50%);
   max-width: 100%;
-  width: 40rem;
-  height: 20rem;
+  width: 30rem;
+  /* height: 20rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem;
+  padding: 4rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
