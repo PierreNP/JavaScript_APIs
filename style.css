@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display :flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height : 100vh;
+  font-family: "Open Sans";
+  /* background: #f1f1f1; */
+}
+
+.container {
+  display :flex;
+  flex-direction: column;
+  width: 80vw;
+  min-height : 80vh;
+  /* border: 3px green solid; */
+
+}
+
+#results {
+  display :grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem;
+  /* border: 2px red solid; */
+}
+
+.movie_box {
+  display :flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  min-height: 30rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.movie_box h1 {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.movie_box button {
+  margin-top: 1rem;
+}
+
+h1 span {
+  color: red;
+  font-size: 0.8rem;
+  display: block;
+}
+
+img {
+  width : 100%;
+}
+
+input {
+  padding: 0.5rem 0.25rem;
+  font-family: inherit;
+  border-radius: 0.125rem;
+}
+
+input[type="submit"],
+button {
+  background: teal;
+  color: white;
+  border: 1px transparent solid;
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.125rem;
+}
+
+
+input[type="submit"]:hover,
+button:hover {
+  opacity: .8;
+}
+
+input[type="text"] {
+  width: 20rem;
+  box-shadow: none;
+  border-style: none;
+  border:1px rgb(194, 194, 194) solid
+}
+
+
+.form-group {
+  margin: 2rem 0;
+}
