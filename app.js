@@ -2,6 +2,11 @@ const API_KEY = '37361375'
 const body = document.querySelector("body")
 const form = document.querySelector("form")
 const search = document.querySelector("#search")
+const popup = document.querySelector("#pop-up")
+const popupContainer = document.querySelector("#popup-container")
+const popupContent = document.querySelector(".popup-content")
+const close = document.querySelector("#close")
+
 const resultsDisplay = document.querySelector("#results")
 let filmTitle = ""
 let filmList = []
@@ -10,37 +15,81 @@ let resultsPageCount = 0
 form.addEventListener("submit", (e) => {
   e.preventDefault()
   filmTitle = search.value
-  getMovieDetails(filmTitle)
+  getMovies(filmTitle)
 })
 
-async function getMovieDetails(searchedFilmTitle) {
+async function getMovies(searchedFilmTitle) {
   resultsDisplay.innerHTML = ''
   let response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedFilmTitle}`)
   let myJson = await response.json()
   resultsPageCount = Math.ceil(myJson.totalResults / 10)
 
   for (let i = 1; i <= resultsPageCount; i++) {
-    response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedFilmTitle}&page=${i}`)
-    console.log("numéro de page :", i)
+
+    response = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedFilmTitle}&page=${i}&plot=full`)
     myJson = await response.json()
     filmList = myJson.Search
 
-    // console.log("voici l'array en train de s'afficher :", filmList)
     filmList.forEach(movie => {
       resultsDisplay.innerHTML += `
       <div class="movie_box">
         <h1>${movie.Title} <span>(${movie.Year})</span></h1>
-        <img src=${movie.Poster !== "N/A" ? movie.Poster : "https://fixiedesign.com/images/stories/virtuemart/product/v%C3%A9lo-urbain-ps1-chrome.png"}>
+        <img class="lzy_img" src="lazy_img.png" data-src=${movie.Poster !== "N/A" ? movie.Poster : "https://fixiedesign.com/images/stories/virtuemart/product/v%C3%A9lo-urbain-ps1-chrome.png"}>
         <button data-movie = "${movie.imdbID}">Plus de détails</button>
       </div>
+      <div class="hidden" id="details">detail : ${movie.imdbID}</div>
       `
+
+      const imageObserver = new IntersectionObserver((entries, imgObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const lazyImage = entry.target
+            lazyImage.src = lazyImage.dataset.src
+          }
+        })
+      });
+      const arr = document.querySelectorAll('img.lzy_img')
+      arr.forEach((v) => {
+        imageObserver.observe(v);
+      })
+
     })
   }
+
+
+
 }
 
 
 resultsDisplay.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
-    console.log(e.target.dataset.movie)
+    popupContainer.style.display = "block"
+    getMovieDetails(e.target.dataset.movie)
   }
 })
+
+async function getMovieDetails(id) {
+  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}&plot=full`)
+  let myDetailedJson = await detailedResponse.json()
+  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b>${myDetailedJson.Plot}</p>`
+}
+
+
+function showPopup() {
+  popupContainer.style.display = "block"
+}
+
+function hidePopup() {
+  popupContainer.style.display = "none"
+  popupContent.innerHTML = ``
+
+}
+
+close.addEventListener('click', hidePopup)
+
+body.addEventListener("click", (e) => {
+  if (e.target === popupContainer)
+    hidePopup()
+})
+
+
