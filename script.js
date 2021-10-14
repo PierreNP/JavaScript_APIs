@@ -65,7 +65,7 @@ async function getMovies(searchedFilmTitle) {
 
 resultsDisplay.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
-    popupContainer.style.display = "block"
+    showPopup()
     getMovieDetails(e.target.dataset.movie)
   }
 })
@@ -73,7 +73,7 @@ resultsDisplay.addEventListener("click", (e) => {
 async function getMovieDetails(id) {
   let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${id}&plot=full`)
   let myDetailedJson = await detailedResponse.json()
-  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b><br>${myDetailedJson.Plot}</p>`
+  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b><br><br>${myDetailedJson.Plot}</p>`
 }
 
 
