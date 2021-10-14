@@ -4,10 +4,10 @@ console.log(KEY)
 const body = document.querySelector("body")
 const form = document.querySelector("form")
 const search = document.querySelector("#search")
-const popup = document.querySelector("#pop-up")
-const popupContainer = document.querySelector("#popup-container")
-const popupContent = document.querySelector(".popup-content")
+const modal = document.querySelector('.modal');
+const modalContent = document.querySelector(".modal-content")
 const close = document.querySelector("#close")
+const overlay = document.querySelector('.overlay');
 
 const resultsDisplay = document.querySelector("#results")
 let filmTitle = ""
@@ -41,7 +41,7 @@ async function getMovies(searchedFilmTitle) {
       </div>
       <div class="hidden" id="details">detail : ${movie.imdbID}</div>
       `
-
+      
       const imageObserver = new IntersectionObserver((entries, imgObserver) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -55,17 +55,14 @@ async function getMovies(searchedFilmTitle) {
       arr.forEach((v) => {
         imageObserver.observe(v)
       })
-
     })
   }
-
-
 }
 
 
 resultsDisplay.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
-    showPopup()
+    openModal()
     getMovieDetails(e.target.dataset.movie)
   }
 })
@@ -73,29 +70,25 @@ resultsDisplay.addEventListener("click", (e) => {
 async function getMovieDetails(id) {
   let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${id}&plot=full`)
   let myDetailedJson = await detailedResponse.json()
-  popupContent.innerHTML = `<p><b>Résumé (attention spoiler !) : </b><br><br>${myDetailedJson.Plot}</p>`
+  modalContent.innerHTML = `<p>${myDetailedJson.Plot}</p>`
 }
 
+function openModal() {
+  modal.classList.remove('hidden');
+  overlay.classList.remove('hidden');
+};
 
-function showPopup() {
-  popupContainer.style.display = "block"
-}
+function closeModal() {
+  modal.classList.add('hidden');
+  overlay.classList.add('hidden');
+  modalContent.innerHTML = ``
+};
 
-function hidePopup() {
-  popupContainer.style.display = "none"
-  popupContent.innerHTML = ``
 
-}
+close.addEventListener('click', closeModal)
+overlay.addEventListener("click", closeModal)
 
-close.addEventListener('click', hidePopup)
-
-body.addEventListener("click", (e) => {
-  if (e.target === popupContainer)
-    hidePopup()
-})
-
-body.addEventListener("keydown", (e) => {
+document.addEventListener("keydown", (e) => {
   if (e.key === "Escape")
-    hidePopup()
+    closeModal()
 })
-
