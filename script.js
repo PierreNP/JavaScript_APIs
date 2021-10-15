@@ -1,6 +1,4 @@
-const KEY = config.apikey
 
-console.log(KEY)
 const body = document.querySelector("body")
 const form = document.querySelector("form")
 const search = document.querySelector("#search")
@@ -22,13 +20,13 @@ form.addEventListener("submit", (e) => {
 
 async function getMovies(searchedFilmTitle) {
   resultsDisplay.innerHTML = ''
-  let response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${searchedFilmTitle}`)
+  let response = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${searchedFilmTitle}`)
   let myJson = await response.json()
   resultsPageCount = Math.ceil(myJson.totalResults / 10)
 
   for (let i = 1; i <= resultsPageCount; i++) {
 
-    response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${searchedFilmTitle}&page=${i}&plot=full`)
+    response = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${searchedFilmTitle}&page=${i}&plot=full`)
     myJson = await response.json()
     filmList = myJson.Search
 
@@ -41,7 +39,7 @@ async function getMovies(searchedFilmTitle) {
       </div>
       <div class="hidden" id="details">detail : ${movie.imdbID}</div>
       `
-      
+
       const imageObserver = new IntersectionObserver((entries, imgObserver) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -68,7 +66,7 @@ resultsDisplay.addEventListener("click", (e) => {
 })
 
 async function getMovieDetails(id) {
-  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${id}&plot=full`)
+  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&i=${id}&plot=full`)
   let myDetailedJson = await detailedResponse.json()
   modalContent.innerHTML = `<p>${myDetailedJson.Plot}</p>`
 }
