@@ -20,13 +20,13 @@ form.addEventListener("submit", (e) => {
 
 async function getMovies(searchedFilmTitle) {
   resultsDisplay.innerHTML = ''
-  let response = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${searchedFilmTitle}`)
+  let response = await fetch(`http://www.omdbapi.com/?apikey=86ed6cd8&s=${searchedFilmTitle}`)
   let myJson = await response.json()
   resultsPageCount = Math.ceil(myJson.totalResults / 10)
 
   for (let i = 1; i <= resultsPageCount; i++) {
 
-    response = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${searchedFilmTitle}&page=${i}&plot=full`)
+    response = await fetch(`http://www.omdbapi.com/?apikey=86ed6cd8&s=${searchedFilmTitle}&page=${i}&plot=full`)
     myJson = await response.json()
     filmList = myJson.Search
 
@@ -66,7 +66,7 @@ resultsDisplay.addEventListener("click", (e) => {
 })
 
 async function getMovieDetails(id) {
-  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=${apikey}&i=${id}&plot=full`)
+  let detailedResponse = await fetch(`http://www.omdbapi.com/?apikey=86ed6cd8&i=${id}&plot=full`)
   let myDetailedJson = await detailedResponse.json()
   modalContent.innerHTML = `<p>${myDetailedJson.Plot}</p>`
 }
